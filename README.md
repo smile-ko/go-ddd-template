@@ -47,10 +47,10 @@ flowchart TD
     B --> D[Logger Init]
     B --> E[Postgres Connect]
     B --> F[SQLC Queries]
-    B --> G[Repository (infra)]
-    B --> H[UseCase (application)]
-    B --> I[HTTP Handler (interface)]
-    I --> J[HTTP Server (Gin)]
+    B --> G[Repository]
+    B --> H[UseCase]
+    B --> I[HTTP Handler]
+    I --> J[HTTP Server]
     J --> K[Client]
     E --> F
     F --> G
