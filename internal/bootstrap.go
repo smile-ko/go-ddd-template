@@ -8,8 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/smile-ko/go-ddd-template/config"
 	application "github.com/smile-ko/go-ddd-template/internal/application/todo"
-	"github.com/smile-ko/go-ddd-template/internal/infrastructure/database"
-	"github.com/smile-ko/go-ddd-template/internal/infrastructure/persistence"
+	"github.com/smile-ko/go-ddd-template/internal/infrastructure/db/sqlc"
+	"github.com/smile-ko/go-ddd-template/internal/infrastructure/repository"
 	v1 "github.com/smile-ko/go-ddd-template/internal/interfaces/http/v1"
 	"github.com/smile-ko/go-ddd-template/pkg/httpserver"
 	"github.com/smile-ko/go-ddd-template/pkg/logger"
@@ -18,6 +18,7 @@ import (
 )
 
 func Run(cfg *config.Config) {
+	// Logger setup
 	log := logger.NewLogger(cfg)
 
 	// DB connection
@@ -38,10 +39,10 @@ func Run(cfg *config.Config) {
 	}
 
 	// Initialize database queries
-	queries := database.New(pg.Pool)
+	queries := sqlc.New(pg.Pool)
 
 	// Todo repository and use case
-	todoRepo := persistence.NewTodoRepository(queries)
+	todoRepo := repository.NewTodoRepository(queries)
 	todoUseCase := application.NewTodoUseCase(todoRepo)
 
 	// Register routes

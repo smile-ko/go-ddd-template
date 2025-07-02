@@ -1,4 +1,4 @@
-package persistence
+package repository
 
 import (
 	"context"
@@ -6,19 +6,19 @@ import (
 	"strconv"
 
 	domain "github.com/smile-ko/go-ddd-template/internal/domain/todo"
-	"github.com/smile-ko/go-ddd-template/internal/infrastructure/database"
+	"github.com/smile-ko/go-ddd-template/internal/infrastructure/db/sqlc"
 )
 
 type sqlTodoRepository struct {
-	q *database.Queries
+	q *sqlc.Queries
 }
 
-func NewTodoRepository(q *database.Queries) domain.ITodoRepository {
+func NewTodoRepository(q *sqlc.Queries) domain.ITodoRepository {
 	return &sqlTodoRepository{q: q}
 }
 
 func (r *sqlTodoRepository) CreateTodo(ctx context.Context, t domain.Todo) (domain.Todo, error) {
-	arg := database.CreateTodoParams{
+	arg := sqlc.CreateTodoParams{
 		Title: t.Title,
 		Description: sql.NullString{
 			String: t.Description,
@@ -60,7 +60,7 @@ func (r *sqlTodoRepository) ListTodos(ctx context.Context) ([]domain.Todo, error
 	return todos, nil
 }
 
-func toDomain(t database.Todo) domain.Todo {
+func toDomain(t sqlc.Todo) domain.Todo {
 	return domain.Todo{
 		ID:          strconv.Itoa(int(t.ID)),
 		Title:       t.Title,
