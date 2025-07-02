@@ -51,6 +51,7 @@ func prepareHttpServer(cfg *config.Config, router *gin.Engine) *Server {
 
 func (s *Server) Start() {
 	go func() {
+		println("[HTTP] Server is running at 0.0.0.0" + s.server.Addr)
 		s.notify <- s.server.ListenAndServe()
 		close(s.notify)
 	}()

@@ -1,6 +1,3 @@
-# App configuration
-APP_NAME = server
-
 # Load environment variables from .env if the file exists
 ifneq ("$(wildcard .env)","")
 	include .env
@@ -9,7 +6,7 @@ endif
 
 # Run the main application
 run:
-	go run ./cmd/$(APP_NAME)/
+	go run ./cmd/server/
 
 # Create a new migration file
 # Usage: make create-migration name=create_todos_table
@@ -40,3 +37,12 @@ migrate-force:
 # Generate Go code from SQL using sqlc
 sqlc-generate:
 	sqlc generate
+
+# Generate Go code from Protobuf definitions
+.PHONY: proto
+proto-user:
+	protoc --proto_path=api/proto/user/v1 \
+	       --go_out=api/proto/user/v1/gen --go_opt=paths=source_relative \
+	       --go-grpc_out=api/proto/user/v1/gen --go-grpc_opt=paths=source_relative \
+	      	api/proto/user/v1/*.proto
+

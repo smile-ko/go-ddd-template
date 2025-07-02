@@ -1,4 +1,4 @@
-package v1
+package http
 
 import (
 	"net/http"
@@ -13,14 +13,10 @@ type TodoHandler struct {
 	log logger.ILogger
 }
 
-func NewTodoHandler(r *gin.Engine, uc application.ITodoUsecase, log logger.ILogger) {
-	h := &TodoHandler{uc: uc, log: log}
-
-	v1 := r.Group("/api/v1/todos")
-	{
-		v1.POST("", h.Create)
-		v1.GET("", h.List)
-		v1.GET("/:id", h.Get)
+func NewTodoHandler(r *gin.Engine, uc application.ITodoUsecase, log logger.ILogger) *TodoHandler {
+	return &TodoHandler{
+		uc:  uc,
+		log: log,
 	}
 }
 
