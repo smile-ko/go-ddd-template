@@ -52,7 +52,7 @@ flowchart TD
     B --> I[HTTP Handler (interface)]
     I --> J[HTTP Server (Gin)]
     J --> K[Client]
-    E -->|Pool| F
+    E --> F
     F --> G
     G --> H
     H --> I
